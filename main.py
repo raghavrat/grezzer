@@ -71,7 +71,7 @@ async def mute(interaction: Interaction, user: nextcord.Member, time, reason):
         await user.edit(timeout=nextcord.utils.utcnow()+datetime.timedelta(seconds=timeSeconds))
         await user.send(f'You have been muted in {interaction.guild.name} by {interaction.user} for {time} for {reason}')
     else:
-        interaction.response.send_message('You do not have the necessay permissions for this command.', epemeral = True)
+        interaction.response.send_message('You do not have the necessay permissions for this command.', ephemeral = True)
 
 @client.slash_command(name='unmute', guild_ids=testingServers, description='Unmutes a user')
 async def unmute(interaction: Interaction, user: nextcord.Member, reason):
@@ -80,7 +80,7 @@ async def unmute(interaction: Interaction, user: nextcord.Member, reason):
         await user.edit(timeout=None)
         await user.send(f'You have been unmuted in {interaction.guild.name} by {interaction.user} for {reason}')
     else:
-        interaction.response.send_message('You do not have the necessay permissions for this command.', epemeral = True)
+        interaction.response.send_message('You do not have the necessay permissions for this command.', ephemeral = True)
 
 token = open('token.txt')
 
