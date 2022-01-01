@@ -6,7 +6,7 @@ import datetime
 import humanfriendly
 
 import os
-testingServers = [920436093734772736]
+testingServers = [920436093734772736, 895791228921192459]
 intents = nextcord.Intents.default()
 intents.members = True
 
@@ -81,6 +81,11 @@ async def unmute(interaction: Interaction, user: nextcord.Member, reason):
         await user.send(f'You have been unmuted in {interaction.guild.name} by {interaction.user} for {reason}')
     else:
         await interaction.response.send_message('You do not have the necessay permissions for this command.', ephemeral = True)
+
+@client.slash_command(name='github', description='Gives you the github link.', guild_ids=testingServers)
+async def github(interaction: Interaction):
+    interaction.response.send_message('https://github.com/doggysir/grezzer')
+
 
 token = open('token.txt')
 
