@@ -84,7 +84,7 @@ async def unmute(interaction: Interaction, user: nextcord.Member, reason):
 
 @client.slash_command(name='github', description='Gives you the github link.', guild_ids=testingServers)
 async def github(interaction: Interaction):
-    interaction.response.send_message('https://github.com/doggysir/grezzer')
+    await interaction.response.send_message('https://github.com/doggysir/grezzer')
 
 
 token = open('token.txt')
