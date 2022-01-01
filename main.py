@@ -2,10 +2,11 @@ from nextcord import Client, Interaction, SlashOption, ChannelType
 import nextcord
 from nextcord.abc import GuildChannel
 from nextcord.ext import commands
-
+import datetime
+import humanfriendly
 
 import os
-TESTING_GUILD_ID = 920436093734772736
+testingServers = [920436093734772736]
 intents = nextcord.Intents.default()
 intents.members = True
 
@@ -19,7 +20,7 @@ async def on_ready():
 
 
 
-@client.slash_command(name='ban',guild_ids=[TESTING_GUILD_ID], description='bon 🔨')
+@client.slash_command(name='ban',guild_ids=testingServers, description='bon 🔨')
 async def ban(interaction: Interaction, user: nextcord.Member, reason):
   if interaction.user.guild_permissions.ban_members == True:
     print(user.name)
@@ -35,7 +36,7 @@ async def ban(interaction: Interaction, user: nextcord.Member, reason):
     )
 
 
-@client.slash_command(name='unban',guild_ids=[TESTING_GUILD_ID], description='Unbans a user using their id.')
+@client.slash_command(name='unban',guild_ids=testingServers, description='Unbans a user using their id.')
 async def unban(interaction: Interaction, id, reason):
   if interaction.user.guild_permissions.ban_members:
     username = await client.fetch_user(id)
@@ -50,7 +51,7 @@ async def unban(interaction: Interaction, id, reason):
       'You do not have the necessary permissions for this action'
     )
 
-@client.slash_command(name='ping', guild_ids=[TESTING_GUILD_ID], description='Pong!🏓')
+@client.slash_command(name='ping', guild_ids=testingServers, description='Pong!🏓')
 async def ping(interaction : Interaction):
   em = nextcord.Embed(title="Pong!🏓", colour=nextcord.Colour.random())
   em.add_field(
@@ -62,6 +63,20 @@ async def ping(interaction : Interaction):
   await interaction.response.send_message(
     embed=em
   )
+@client.slash_command(name='mute', guild_ids=testingServers, description='Mutes a user for a given amount of time')
+async def mute(interaction: Interaction, user: nextcord.Member, time, reason):
+    timeSeconds = humanfriendly.parse_timespan(time)
+    await interaction.send(f'{user} has been muted successfully.')
+    await user.edit(timeout=nextcord.utils.utcnow()+datetime.timedelta(seconds=timeSeconds))
+    await user.send(f'You have been muted in {interaction.guild.name} by {interaction.user} for {time} for {reason}')
+
+@client.slash_command(name='unmute', guild_ids=testingServers, description='Unmutes a user')
+async def unmute(interaction: Interaction, user: nextcord.Member, reason):
+
+    await interaction.send(f'{user} has been unmuted successfully.')
+    await user.edit(timeout=None)
+    await user.send(f'You have been unmuted in {interaction.guild.name} by {interaction.user} for {reason}')
+
 token = open('token.txt')
 
 
