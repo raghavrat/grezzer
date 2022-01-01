@@ -65,17 +65,22 @@ async def ping(interaction : Interaction):
   )
 @client.slash_command(name='mute', guild_ids=testingServers, description='Mutes a user for a given amount of time')
 async def mute(interaction: Interaction, user: nextcord.Member, time, reason):
-    timeSeconds = humanfriendly.parse_timespan(time)
-    await interaction.send(f'{user} has been muted successfully.')
-    await user.edit(timeout=nextcord.utils.utcnow()+datetime.timedelta(seconds=timeSeconds))
-    await user.send(f'You have been muted in {interaction.guild.name} by {interaction.user} for {time} for {reason}')
+    if interaction.user.guild_permissions.moderate_members:
+        timeSeconds = humanfriendly.parse_timespan(time)
+        await interaction.response.send_message(f'{user} has been muted successfully.')
+        await user.edit(timeout=nextcord.utils.utcnow()+datetime.timedelta(seconds=timeSeconds))
+        await user.send(f'You have been muted in {interaction.guild.name} by {interaction.user} for {time} for {reason}')
+    else:
+        interaction.response.send_message('You do not have the necessay permissions for this command.', epemeral = True)
 
 @client.slash_command(name='unmute', guild_ids=testingServers, description='Unmutes a user')
 async def unmute(interaction: Interaction, user: nextcord.Member, reason):
-
-    await interaction.send(f'{user} has been unmuted successfully.')
-    await user.edit(timeout=None)
-    await user.send(f'You have been unmuted in {interaction.guild.name} by {interaction.user} for {reason}')
+    if interaction.user.guild_permissions.moderate_members:
+        await interaction.response.send_message(f'{user} has been unmuted successfully.')
+        await user.edit(timeout=None)
+        await user.send(f'You have been unmuted in {interaction.guild.name} by {interaction.user} for {reason}')
+    else:
+        interaction.response.send_message('You do not have the necessay permissions for this command.', epemeral = True)
 
 token = open('token.txt')
 
