@@ -13,6 +13,14 @@ intents.members = True
 print(nextcord.Intents().all())
 # While slash commands work with Bot from ext.commands, this is a basic slash example and thus, we use Client.
 client = commands.Bot(command_prefix='&', intents=intents)
+client.remove_command("help")
+
+
+
+@client.command()
+async def help(ctx):
+    await ctx.send('Please use slash comands.')
+
 
 @client.event
 async def on_ready():
@@ -84,7 +92,7 @@ async def unmute(interaction: Interaction, user: nextcord.Member, reason):
 
 @client.slash_command(name='github', description='Gives you the github link.', guild_ids=testingServers)
 async def github(interaction: Interaction):
-    await interaction.response.send_message('https://github.com/doggysir/grezzer')
+    await interaction.response.send_message('https://github.com/doggysir/grezzer', ephemeral = True)
 
 
 token = open('token.txt')
