@@ -6,7 +6,7 @@ import datetime
 import humanfriendly
 
 import os
-testingServers = [920436093734772736, 895791228921192459]
+testingServers = [920436093734772736, 895791228921192459, 926508489487044628]
 intents = nextcord.Intents.default()
 intents.members = True
 
